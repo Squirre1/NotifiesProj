@@ -1,4 +1,5 @@
 import React from 'react';
+import { Navigator, NativeModules } from 'react-native';
 import { Scene, Router } from 'react-native-router-flux';
 import { NotificationsListContainer } from '@appContainers/notifications';
 import { Provider, connect } from 'react-redux';
