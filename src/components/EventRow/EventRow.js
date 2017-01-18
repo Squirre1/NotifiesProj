@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
-import { TouchableHighlight, Text, View } from 'react-native';
-import ResponsiveImage from 'react-native-responsive-image';
-import { Icon } from 'react-native-elements'
+import { Text, View } from 'react-native';
+import { Icon } from 'react-native-elements';
 import styles from './style';
 
 
@@ -13,8 +12,7 @@ export default class EventRow extends Component {
   }
 
   render() {
-    const { notifications } = this.props;
-    const activeNotifications = notifications.filter(notify => !notify.unread);
+    const { notifications, onNotifyPress } = this.props;
 
     return (
       <View style={styles.eventRow}>
@@ -27,9 +25,10 @@ export default class EventRow extends Component {
             button
             raised
             containerStyle={styles.bellButtonStyle}
+            onPress={onNotifyPress}
           />
-          {!!activeNotifications.length &&
-            <Text style={styles.bellCountStyle}>{activeNotifications.length}</Text>
+          {!!notifications.length &&
+            <Text style={styles.bellCountStyle}>{notifications.length}</Text>
           }
         </View>
       </View>
@@ -40,4 +39,5 @@ export default class EventRow extends Component {
 
 EventRow.propTypes = {
   notifications: React.PropTypes.array,
+  onNotifyPress: React.PropTypes.func,
 };

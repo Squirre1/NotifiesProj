@@ -1,12 +1,16 @@
 import React from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NavigationBar from 'react-native-navbar';
 import { Button, FormInput } from 'react-native-elements';
+import PopupDialog, { DialogTitle } from 'react-native-popup-dialog';
 import { NotificationsListContainerSelector } from '@selectors';
 import { NavbarStyles } from '@appComponents/NavBar';
 import { EventRow } from '@appComponents/EventRow';
+import { NotifyRow } from '@appComponents/NotifyRow';
+import { POPOVER_COUNT } from '@constants/commons';
+import moment from 'moment';
 
 import styles from './styles';
 
@@ -37,9 +41,12 @@ class NotificationsListContainer extends React.Component {
           statusBar={{ style: 'light-content' }}
         />
         <View style={styles.eventBlock}>
-          <EventRow notifications={notifications}/>
+          <EventRow
+            notifications={notifications}
+            onNotifyPress={() => this.popupDialog.openDialog()}
+          />
         </View>
-        <ScrollView style={styles.buttonsBlock}>
+        <View style={styles.buttonsBlock}>
           <View style={styles.sendingBlock}>
             <FormInput
               placeholder="Название события"
@@ -64,7 +71,18 @@ class NotificationsListContainer extends React.Component {
             title="УДАЛИТЬ ВСЕ СОБЫТИЯ"
             buttonStyle={styles.buttonStyle}
           />
-        </ScrollView>
+        </View>
+        <PopupDialog
+          dialogTitle={<DialogTitle title="УВЕДОМЛЕНИЯ" />}
+          ref={(popupDialog) => { this.popupDialog = popupDialog; }}
+        >
+          {notifications.slice(0, POPOVER_COUNT).map(notify =>
+              <NotifyRow
+                title={notify.title}
+                date={moment(notify.datetime).fromNow()}
+              />
+          )}
+        </PopupDialog>
       </View>
     );
   }
