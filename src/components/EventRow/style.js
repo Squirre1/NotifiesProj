@@ -17,10 +17,12 @@ const EventRowStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   bellCountStyle: {
+    position: 'absolute',
     color: 'white',
     justifyContent: 'flex-end',
     alignSelf: 'flex-end',
-    right: 20,
+    right: 7,
+    top: 2,
     fontSize: 11,
     backgroundColor: 'violet',
     borderRadius: 25,

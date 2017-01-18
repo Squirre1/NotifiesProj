@@ -25,7 +25,7 @@ export default class EventRow extends Component {
             button
             raised
             containerStyle={styles.bellButtonStyle}
-            onPress={onNotifyPress}
+            onPress={!!notifications.length && onNotifyPress}
           />
           {!!notifications.length &&
             <Text style={styles.bellCountStyle}>{notifications.length}</Text>

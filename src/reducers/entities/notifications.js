@@ -3,6 +3,9 @@ import {
   READ_ALL_NOTIFIES,
   DELETE_ALL_NOTIFIES,
 } from '@constants/actions';
+import moment from 'moment';
+
+const EMPTY_NOTIFY = { unread: true };
 
 const initialState = [
   {
@@ -57,7 +60,10 @@ export default function (state = initialState, action = {}) {
 
     case CREATE_NOTIFY:
       const notifies = state.slice();
-      notifies.push(notify);
+      if (notify.title) {
+        const id = { id: notifies.length + 1 };
+        notifies.push(Object.assign({}, notify, id, EMPTY_NOTIFY, { datetime: moment().valueOf() }));
+      }
       return notifies;
 
     case READ_ALL_NOTIFIES:

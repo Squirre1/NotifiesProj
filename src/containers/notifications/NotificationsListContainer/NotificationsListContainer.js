@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NavigationBar from 'react-native-navbar';
@@ -10,6 +10,7 @@ import { NavbarStyles } from '@appComponents/NavBar';
 import { EventRow } from '@appComponents/EventRow';
 import { NotifyRow } from '@appComponents/NotifyRow';
 import { POPOVER_COUNT } from '@constants/commons';
+import { deleteNotifies, readAllNotifies, createNotify } from '@actions';
 import moment from 'moment';
 
 import styles from './styles';
@@ -28,8 +29,12 @@ class NotificationsListContainer extends React.Component {
     };
   }
 
+  componentWillMount() {
+    setInterval(() => this.createNotifyHandler(`notify ${moment().valueOf()}`), 5000);
+  }
+
   render() {
-    const { notifications } = this.props;
+    const { notifications, deleteNotifies, readAllNotifies } = this.props;
 
     return (
       <View style={styles.notifyList}>
@@ -52,24 +57,29 @@ class NotificationsListContainer extends React.Component {
               placeholder="Название события"
               containerStyle={styles.inputContainerStyle}
               underlineColorAndroid="transparent"
+              textInputRef="nameEvent"
+              ref="forminput"
             />
             <Button
               raised
               icon={{ name: 'send' }}
               title="ОТПРАВИТЬ"
               buttonStyle={styles.buttonStyle}
+              onPress={() => this.createNotifyHandler()}
             />
           </View>
           <Button
             raised
             title="ПОМЕТИТЬ ВСЕ СОБЫТИЯ ПРОЧИТАННЫМИ"
             buttonStyle={styles.buttonStyle}
+            onPress={readAllNotifies}
           />
           <Button
             raised
             icon={{ name: 'delete' }}
             title="УДАЛИТЬ ВСЕ СОБЫТИЯ"
             buttonStyle={styles.buttonStyle}
+            onPress={deleteNotifies}
           />
         </View>
         <PopupDialog
@@ -86,10 +96,17 @@ class NotificationsListContainer extends React.Component {
       </View>
     );
   }
+
+  createNotifyHandler(title) {
+    this.props.createNotify({ title: title || this.refs.forminput.refs.nameEvent._lastNativeText });
+  }
 }
 
 NotificationsListContainer.propTypes = {
   notifications: React.PropTypes.array,
+  deleteNotifies: React.PropTypes.func,
+  readAllNotifies: React.PropTypes.func,
+  createNotify: React.PropTypes.func,
 };
 
 NotificationsListContainer.defaultProps = {
@@ -98,7 +115,9 @@ NotificationsListContainer.defaultProps = {
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-
+    deleteNotifies,
+    readAllNotifies,
+    createNotify,
   }, dispatch);
 }
 
