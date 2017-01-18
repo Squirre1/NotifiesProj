@@ -1,11 +1,12 @@
 import React from 'react';
-import { View, Text, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import NavigationBar from 'react-native-navbar';
 import { Button, FormInput } from 'react-native-elements';
 import { NotificationsListContainerSelector } from '@selectors';
-import { NavbarStyles, NavBarButton } from '@appComponents/NavBar';
+import { NavbarStyles } from '@appComponents/NavBar';
+import { EventRow } from '@appComponents/EventRow';
 
 import styles from './styles';
 
@@ -24,6 +25,8 @@ class NotificationsListContainer extends React.Component {
   }
 
   render() {
+    const { notifications } = this.props;
+
     return (
       <View style={styles.notifyList}>
         <NavigationBar
@@ -33,7 +36,9 @@ class NotificationsListContainer extends React.Component {
           style={NavbarStyles.navBar}
           statusBar={{ style: 'light-content' }}
         />
-        { this.renderEvent() }
+        <View style={styles.eventBlock}>
+          <EventRow notifications={notifications}/>
+        </View>
         <ScrollView style={styles.buttonsBlock}>
           <View style={styles.sendingBlock}>
             <FormInput
@@ -63,15 +68,6 @@ class NotificationsListContainer extends React.Component {
       </View>
     );
   }
-
-  renderEvent() {
-    return (
-      <View>
-        <Text>event</Text>
-      </View>
-    );
-  }
-
 }
 
 NotificationsListContainer.propTypes = {

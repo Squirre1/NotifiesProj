@@ -5,7 +5,10 @@ const styles = StyleSheet.create({
   notifyList: {
     flex: 1,
     backgroundColor: '#F6F6F8',
-    flexDirection: 'column',
+  },
+  eventBlock: {
+    flex: 1,
+    padding: 15,
   },
   buttonsBlock: {
     backgroundColor: 'transparent',
